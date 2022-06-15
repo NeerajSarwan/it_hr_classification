@@ -49,50 +49,39 @@ st.markdown("## **📌 Paste document **")
 with open("it_hr_model", "rb") as f:
     model = pickle.load(f)
 
-with st.form(key="my_form"):
-    doc1 = st.text_area(
-        "Paste your text below (max 50 words)",
-        height=150,
+doc1 = st.text_area("Paste your text below (max 50 words)", height=150)
+
+MAX_WORDS = 50
+import re
+res = len(re.findall(r"\w+", doc1))
+if res > MAX_WORDS:
+    st.warning(
+        "⚠️ Your text contains "
+        + str(res)
+        + " words."
+        + " Only the first 50 words will be reviewed."
     )
 
-    MAX_WORDS = 50
-    import re
-    res = len(re.findall(r"\w+", doc1))
-    if res > MAX_WORDS:
-        st.warning(
-            "⚠️ Your text contains "
-            + str(res)
-            + " words."
-            + " Only the first 50 words will be reviewed."
-        )
+doc1 = doc1[:MAX_WORDS]
 
-        doc1 = doc1[:MAX_WORDS]
+doc2 = st.text_area("Paste your text below (max 500 words)", height=350)
 
-    doc2 = st.text_area(
-        "Paste your text below (max 500 words)",
-        height=350,
+MAX_WORDS = 500
+import re
+res = len(re.findall(r"\w+", doc2))
+if res > MAX_WORDS:
+    st.warning(
+        "⚠️ Your text contains "
+        + str(res)
+        + " words."
+        + " Only the first 500 words will be reviewed."
     )
 
-    MAX_WORDS = 500
-    import re
-    res = len(re.findall(r"\w+", doc2))
-    if res > MAX_WORDS:
-        st.warning(
-            "⚠️ Your text contains "
-            + str(res)
-            + " words."
-            + " Only the first 500 words will be reviewed."
-        )
+doc2 = doc2[:MAX_WORDS]
+submit_button = st.button(label="Submit Ticket")
 
-        doc2 = doc2[:MAX_WORDS]
-
-        submit_button = st.form_submit_button(label="Submit Ticket")
-
-if not submit_button:
-    st.stop()
-
-test = DataFrame({"short_description": [doc1], "long_description": [doc2]})
-prediction = model.predict(test)
-prediction = "IT" if prediction[0] == 1 else 'HR'
-
-st.write("Ticket Category Type: {}".format(prediction))
+if submit_button:
+    test = DataFrame({"short_description": [doc1], "long_description": [doc2]})
+    prediction = model.predict(test)
+    prediction = "IT" if prediction[0] == 1 else 'HR'
+    st.write("Ticket Category Type: {}".format(prediction))

@@ -104,4 +104,4 @@ test = DataFrame({"short_description": [doc1], "long_description": [doc2]})
 prediction = model.predict(test)
 prediction = "IT" if prediction[0] == 1 else 'HR'
 
-print(prediction)
+st.write(prediction)

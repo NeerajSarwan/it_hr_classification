@@ -50,7 +50,7 @@ with open("it_hr_model", "rb") as f:
     model = pickle.load(f)
 
 with st.form(key="my_form"):
-    doc1 = st.text_area("Paste your text below (max 50 words)", height=150)
+    doc1 = st.text_area("Short Ticket Description (max 50 words)", height=150)
 
     MAX_WORDS = 50
     import re
@@ -65,7 +65,7 @@ with st.form(key="my_form"):
 
     doc1 = doc1[:MAX_WORDS]
 
-    doc2 = st.text_area("Paste your text below (max 500 words)", height=350)
+    doc2 = st.text_area("Long Ticket Description (max 500 words)", height=350)
 
     MAX_WORDS = 500
     import re
